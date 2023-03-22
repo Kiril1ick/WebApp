@@ -1,0 +1,14 @@
+﻿@model bool
+@if(Model){
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="/profile">Порофиль</a>
+    </li>
+}
+else{
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="/login">Войти</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="/register">Зарегистрироваться</a>
+    </li>
+}

@@ -31,7 +31,7 @@ namespace WebApp.BL.Auth
                 if (RememberMe)
                 {
                     Guid tokenId = await userTokenDAL.Create(user.UserID ?? 0);
-                    webCookie.AddSecure(AuthConstants.RememberMeCookieName, tokenId.ToString());
+                    webCookie.AddSecure(AuthConstants.RememberMeCookieName, tokenId.ToString(), AuthConstants.RememberMeDays);
                 }
                 return user.UserID ?? 0;
             }
