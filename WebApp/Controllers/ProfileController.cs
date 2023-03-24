@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
 using WebApp.Middleware;
 using WebApp.ViewModel;
+using WebApp.Service;
 
 namespace WebApp.Controllers
 {
@@ -19,24 +19,13 @@ namespace WebApp.Controllers
         [Route("/profile")]
         public async  Task<IActionResult> IndexSave()
         {
-            string fileName = "";
             var imgData = Request.Form.Files[0];
 
             if (imgData != null)
             {
-                MD5 md5hash = MD5.Create();
-                byte[] inputByte = System.Text.Encoding.ASCII.GetBytes(imgData.FileName);
-                byte[] hashByte = md5hash.ComputeHash(inputByte);
-
-                string hash = Convert.ToHexString(hashByte);
-
-                var dir = "./wwwroot/images/" + hash.Substring(0, 2) + "/" + hash.Substring(0, 4);
-
-                if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-
-                fileName = dir + "/" + imgData.FileName;
-                using (var stream = System.IO.File.Create(fileName))
-                    await imgData.CopyToAsync(stream);
+                WebFile webFile = new WebFile();
+                string fileName = webFile.GetWebFileName(imgData.FileName);
+                await webFile.UploadAndResizeImage(imgData.OpenReadStream(), fileName, 800, 600);
             }
 
             return View("Index", new ProfileViewModel());
