@@ -2,6 +2,8 @@
 using System.Text;
 using System.IO;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace WebApp.Service
 {

@@ -5,7 +5,7 @@ namespace WebApp.DAL
 {
     public class DbHelper
     {
-        public static string ConnectionString = "Host=localhost;Port=5432;Database=TestDB;User ID=postgres;Password=kirill02";
+        public static string ConnectionString = "Host=localhost;Port=5432;Database=testdb;User ID=kirill;Password=kirill02";
 
         public static async Task<int> ExecuteScalarAsync(string sql, object model)
         {
