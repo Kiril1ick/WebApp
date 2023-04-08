@@ -3,7 +3,7 @@ using WebApp.ViewModel;
 
 namespace WebApp.ViewMapper
 {
-    public class AuthMapper
+    public static class AuthMapper
     {
         public static UserModel MapRegistrationViewModelToUserModel(RegistrationViewModel model)
         {

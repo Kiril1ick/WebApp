@@ -1,6 +1,7 @@
 using WebApp.BL;
 using WebApp.BL.Auth;
 using WebApp.BL.Generel;
+using WebApp.BL.Profile;
 using WebApp.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IAuthBL, AuthBL>();
 builder.Services.AddSingleton<IEncrypt, Encrypt>();
 builder.Services.AddSingleton<IUserTokenDAL, UserTokenDAL>();
+builder.Services.AddSingleton<IProfileDAL, ProfileDAL>();
+builder.Services.AddSingleton<IProfileBL, ProfileBL>();
+
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 builder.Services.AddSingleton<IAuthDAL, AuthDAL>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

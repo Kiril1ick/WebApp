@@ -69,7 +69,7 @@ namespace WebApp.BL.Auth
 
         public async Task Login(int id)
         {
-            dbSessionBL.SetUserId(id);
+            await dbSessionBL.SetUserId(id);
         }
 
     }

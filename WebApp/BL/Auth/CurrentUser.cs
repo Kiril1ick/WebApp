@@ -43,5 +43,10 @@ namespace WebApp.BL.Auth
             }
             return isloggedIn;
         }
+
+        public async Task<int?> GetCurrentUser()
+        {
+            return await dbSessionBL.GetUserId();
+        }
     }
 }

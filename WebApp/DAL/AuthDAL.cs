@@ -10,7 +10,7 @@ namespace WebApp.DAL
         {
             string query = @"insert into AppUser(Email, Password, Salt, Status)
                 values(@Email,@Password, @Salt, @Status);
-                select currval(pg_get_serial_sequence('AppUser','userid'));";
+                returning UserId;";
             var result = await DbHelper.QueryAsync<int>(query, model);
             return result.First();
         }

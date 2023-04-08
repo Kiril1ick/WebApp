@@ -2,17 +2,32 @@
 using WebApp.Middleware;
 using WebApp.ViewModel;
 using WebApp.Service;
+using WebApp.BL.Auth;
+using WebApp.BL.Profile;
+using WebApp.ViewMapper;
+using WebApp.DAL.Models;
 
 namespace WebApp.Controllers
 {
     [SiteAuthorize()]
     public class ProfileController : Controller
     {
+        public readonly ICurrentUser currentUser;
+        public readonly IProfileBL profileBL;
+        public ProfileController(ICurrentUser currentUser, IProfileBL profileBL)
+        {
+            this.profileBL = profileBL;
+            this.currentUser = currentUser;
+        }
         [HttpGet]
         [Route("/profile")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(new ProfileViewModel());
+            int? userId = await currentUser.GetCurrentUser();
+            var profiles = await profileBL.Get((int)userId);
+            ProfileModel profileModel = profiles.FirstOrDefault();
+            ProfileMapper.MapProfileModelToProfileViewModel(profileModel);
+            return View();
         }
 
         [HttpPost]

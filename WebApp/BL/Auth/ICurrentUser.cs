@@ -3,5 +3,6 @@
     public interface ICurrentUser
     {
         Task<bool> IsLoggedIn();
+        Task<int?> GetCurrentUser();
     }
 }
