@@ -23,9 +23,7 @@ namespace WebApp.Controllers
         [Route("/profile")]
         public async Task<IActionResult> Index()
         {
-            int? userId = await currentUser.GetCurrentUser();
-            if (userId == null) throw new Exception("Пользователь не найден");
-            var profiles = await profileBL.Get((int)userId);
+            var profiles = await currentUser.GetProfiles();
 
             ProfileModel? profileModel = profiles.FirstOrDefault();
 
@@ -37,7 +35,7 @@ namespace WebApp.Controllers
         [AutoValidateAntiforgeryToken]
         public async  Task<IActionResult> IndexSave(ProfileViewModel model)
         {
-            int? userId = await currentUser.GetCurrentUser();
+            int? userId = await currentUser.GetCurrentUserId();
             if (userId == null) throw new Exception("Пользователь не найден");
             var profiles = await profileBL.Get((int)userId);
             if (model.ProfileId!=null && !profiles.Any(m => m.ProfileId == model.ProfileId))
