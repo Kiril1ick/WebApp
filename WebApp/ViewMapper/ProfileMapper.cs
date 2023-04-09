@@ -10,6 +10,7 @@ namespace WebApp.ViewMapper
         {
             return new ProfileModel()
             {
+                ProfileId = model.ProfileId,
                 ProfileName = model.ProfileName,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -20,7 +21,7 @@ namespace WebApp.ViewMapper
         {
             return new ProfileViewModel()
             {
-                ProfileId = model.ProfileID,
+                ProfileId = model.ProfileId,
                 ProfileName = model.ProfileName,
                 FirstName = model.FirstName,
                 LastName = model.LastName,

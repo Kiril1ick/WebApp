@@ -9,7 +9,7 @@ namespace WebApp.DAL
         public async Task<int> CreateUser(UserModel model)
         {
             string query = @"insert into AppUser(Email, Password, Salt, Status)
-                values(@Email,@Password, @Salt, @Status);
+                values(@Email,@Password, @Salt, @Status)
                 returning UserId;";
             var result = await DbHelper.QueryAsync<int>(query, model);
             return result.First();

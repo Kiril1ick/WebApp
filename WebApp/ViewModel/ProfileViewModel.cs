@@ -4,7 +4,7 @@ namespace WebApp.ViewModel
 {
     public class ProfileViewModel
     {
-        public int ProfileId { get; set; }
+        public int? ProfileId { get; set; }
         [Required]
         public string? ProfileName { get; set; }
         [Required]

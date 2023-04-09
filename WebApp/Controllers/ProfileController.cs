@@ -24,23 +24,39 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Index()
         {
             int? userId = await currentUser.GetCurrentUser();
+            if (userId == null) throw new Exception("Пользователь не найден");
             var profiles = await profileBL.Get((int)userId);
-            ProfileModel profileModel = profiles.FirstOrDefault();
-            ProfileMapper.MapProfileModelToProfileViewModel(profileModel);
-            return View();
+
+            ProfileModel? profileModel = profiles.FirstOrDefault();
+
+            return View(profileModel != null ? ProfileMapper.MapProfileModelToProfileViewModel(profileModel) : new ProfileViewModel());
         }
 
         [HttpPost]
         [Route("/profile")]
-        public async  Task<IActionResult> IndexSave()
+        [AutoValidateAntiforgeryToken]
+        public async  Task<IActionResult> IndexSave(ProfileViewModel model)
         {
-            var imgData = Request.Form.Files[0];
+            int? userId = await currentUser.GetCurrentUser();
+            if (userId == null) throw new Exception("Пользователь не найден");
+            var profiles = await profileBL.Get((int)userId);
+            if (model.ProfileId!=null && !profiles.Any(m => m.ProfileId == model.ProfileId))
+                throw new Exception("Error");
 
-            if (imgData != null)
+
+            if (ModelState.IsValid)
             {
-                WebFile webFile = new WebFile();
-                string fileName = webFile.GetWebFileName(imgData.FileName);
-                await webFile.UploadAndResizeImage(imgData.OpenReadStream(), fileName, 800, 600);
+                ProfileModel profileModel = ProfileMapper.MapProfileViewModelToProfileModel(model);
+                profileModel.UserId = (int)userId;
+                if (Request.Form.Files.Count > 0 && Request.Form.Files[0] != null)
+                {
+                    WebFile webFile = new WebFile();
+                    string fileName = webFile.GetWebFileName(Request.Form.Files[0].FileName);
+                    await webFile.UploadAndResizeImage(Request.Form.Files[0].OpenReadStream(), fileName, 800, 600);
+                    profileModel.ProfileImage = fileName;
+                }
+                await profileBL.AddOrUpdate(profileModel);
+                return Redirect("/");
             }
 
             return View("Index", new ProfileViewModel());

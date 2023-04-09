@@ -42,7 +42,7 @@ namespace WebApp.Service
                 int aspectWidth = newWidth;
                 int aspectHeight = newHeight;
 
-                if (image.Width / (image.Height / newHeight) > newWidth)
+                if (image.Width / (image.Height / (float)newHeight) > newWidth)
                     aspectHeight = (int)(image.Height / (image.Width / (float)newWidth));
                 else
                     aspectHeight = (int)(image.Width / (image.Height / (float)newHeight));

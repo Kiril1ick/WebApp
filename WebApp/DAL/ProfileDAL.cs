@@ -8,9 +8,9 @@ namespace WebApp.DAL
     {
         public async Task<int> Add(ProfileModel profileModel)
         {
-            string query = @"insert into AppUser(UserId,ProfileName,FirstName,LastName,ProfileImage)
-                values(@UserId,@ProfileName,@FirstName,@LastName,@ProfileImage);
-                returning ProfileID;";
+            string query = @"insert into Profile(UserId,ProfileName,FirstName,LastName,ProfileImage)
+                values(@UserId,@ProfileName,@FirstName,@LastName,@ProfileImage)
+                RETURNING ProfileId;";
             var result = await DbHelper.QueryAsync<int>(query, profileModel);
             return result.First();
         }
@@ -18,9 +18,9 @@ namespace WebApp.DAL
         public async Task<IEnumerable<ProfileModel>> Get(int userId)
         {
             return await DbHelper.QueryAsync<ProfileModel>(
-                    @"select ProfileID,UserId,ProfileName,FirstName,LastName,ProfileImage" +
-                    @"from Profile " +
-                    @"where UserId = @id", new { id = userId });
+                    @"select ProfileId,UserId,ProfileName,FirstName,LastName,ProfileImage
+                    from profile 
+                    where UserId = @id", new { id = userId });
         }
 
         public async Task Update(ProfileModel profileModel)
@@ -30,7 +30,7 @@ namespace WebApp.DAL
                     FirstName = @FirstName,
                     LastName = @LastName,
                     ProfileImage = @ProfileImage
-                where ProfileID = @ProfileID";
+                where ProfileId = @ProfileId";
             var result = await DbHelper.QueryAsync<int>(query, profileModel);
         }
     }
